@@ -1,0 +1,97 @@
+[gd_scene load_steps=11 format=3 uid="uid://dkj1jiw0uryxd"]
+
+[ext_resource type="Script" uid="uid://5jygbuejlcl6" path="res://scenes/map.gd" id="1_0cso3"]
+[ext_resource type="ArrayMesh" uid="uid://ypo1rs2d3x8n" path="res://mountains2.obj" id="1_gldc4"]
+[ext_resource type="Shader" uid="uid://bqq2jdxvs3uvg" path="res://water.gdshader" id="2_0cso3"]
+[ext_resource type="PackedScene" uid="uid://b106o0dinetaq" path="res://scenes/Plane.tscn" id="3_2klcf"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gldc4"]
+albedo_color = Color(0.26295462, 0.43520594, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_05x41"]
+size = Vector3(10000, 1, 100000)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gqbix"]
+render_priority = 0
+shader = ExtResource("2_0cso3")
+shader_parameter/color_shallow = Color(0.01, 0.2, 0.3, 1)
+shader_parameter/color_deep = Color(0.3, 0.5, 0.6, 1)
+shader_parameter/transparency = 0.6
+shader_parameter/metallic = 0.0
+shader_parameter/roughness = 0.25
+shader_parameter/max_visible_depth = 20.0
+shader_parameter/wave_move_direction_a = Vector2(-1, 0)
+shader_parameter/wave_move_direction_b = Vector2(0, 1)
+shader_parameter/wave_noise_scale_a = 15.0
+shader_parameter/wave_noise_scale_b = 15.0
+shader_parameter/wave_time_scale_a = 0.15
+shader_parameter/wave_time_scale_b = 0.15
+shader_parameter/wave_height_scale = 1.0
+shader_parameter/wave_normal_flatness = 50.0
+shader_parameter/surface_normals_move_direction_a = Vector2(-1, 0.2)
+shader_parameter/surface_normals_move_direction_b = Vector2(0.2, 1)
+shader_parameter/surface_texture_roughness = 0.15
+shader_parameter/surface_texture_scale = 0.1
+shader_parameter/surface_texture_time_scale = 0.06
+shader_parameter/ssr_resolution = 1.0
+shader_parameter/ssr_max_travel = 30.0
+shader_parameter/ssr_max_diff = 4.0
+shader_parameter/ssr_mix_strength = 0.7
+shader_parameter/ssr_screen_border_fadeout = 0.3
+shader_parameter/refraction_intensity = 0.4
+shader_parameter/border_color = Color(1, 1, 1, 1)
+shader_parameter/border_scale = 2.0
+shader_parameter/border_near = 0.5
+shader_parameter/border_far = 300.0
+shader_parameter/cut_out_x = 0.0
+shader_parameter/cut_out_z = 0.0
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_e0an3"]
+ground_bottom_color = Color(0.23213747, 0.16107145, 0, 1)
+ground_horizon_color = Color(0.111124285, 0.7419807, 0.7699904, 1)
+ground_curve = 0.2690875
+energy_multiplier = 4.43
+
+[sub_resource type="Sky" id="Sky_iw27f"]
+sky_material = SubResource("ProceduralSkyMaterial_e0an3")
+
+[sub_resource type="Environment" id="Environment_71pa8"]
+background_mode = 2
+sky = SubResource("Sky_iw27f")
+sky_custom_fov = 39.5
+ambient_light_color = Color(1, 1, 1, 1)
+ssr_enabled = true
+ssao_enabled = true
+ssil_enabled = true
+sdfgi_enabled = true
+glow_enabled = true
+fog_sky_affect = 0.535
+fog_height = -754.53
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_0cso3")
+
+[node name="Ground" type="CSGMesh3D" parent="."]
+material_override = SubResource("StandardMaterial3D_gldc4")
+use_collision = true
+mesh = ExtResource("1_gldc4")
+
+[node name="Water" type="CSGMesh3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3789673, -2.3187103, -0.68362427)
+mesh = SubResource("BoxMesh_05x41")
+material = SubResource("ShaderMaterial_gqbix")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_71pa8")
+
+[node name="Plane" parent="." instance=ExtResource("3_2klcf")]
+transform = Transform3D(-0.7029108, 0, -0.711278, 0, 1, 0, 0.711278, 0, -0.7029108, 269.7165, 442.82797, 38.001656)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+shadow_enabled = true
+
+[node name="Marker3D" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 283.63754, 0)
+gizmo_extents = 10.0
+
+[connection signal="destroyed" from="Plane" to="." method="_on_plane_destroyed"]
