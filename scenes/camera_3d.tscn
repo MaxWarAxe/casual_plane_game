@@ -1,0 +1,26 @@
+[gd_scene load_steps=2 format=3 uid="uid://b1o1ixpyyytk0"]
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_7u8ti"]
+auto_exposure_enabled = true
+dof_blur_far_enabled = true
+dof_blur_far_distance = 500.0
+
+[node name="Camera3D" type="Camera3D"]
+transform = Transform3D(-4.0321e-08, 0.3861476, -0.9224371, 1.6879046e-08, 0.9224371, 0.3861476, 1, 0, -4.371139e-08, 0, 0, 0)
+attributes = SubResource("CameraAttributesPractical_7u8ti")
+current = true
+fov = 80.5
+
+[node name="SubViewport" type="SubViewport" parent="."]
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="CenterContainer"]
+clip_contents = true
+custom_minimum_size = Vector2(2, 2)
+layout_mode = 2

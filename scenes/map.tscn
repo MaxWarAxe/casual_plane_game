@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://dkj1jiw0uryxd"]
+[gd_scene load_steps=12 format=3 uid="uid://dkj1jiw0uryxd"]
 
 [ext_resource type="Script" uid="uid://5jygbuejlcl6" path="res://scenes/map.gd" id="1_0cso3"]
 [ext_resource type="ArrayMesh" uid="uid://ypo1rs2d3x8n" path="res://mountains2.obj" id="1_gldc4"]
 [ext_resource type="Shader" uid="uid://bqq2jdxvs3uvg" path="res://water.gdshader" id="2_0cso3"]
 [ext_resource type="PackedScene" uid="uid://b106o0dinetaq" path="res://scenes/Plane.tscn" id="3_2klcf"]
+[ext_resource type="PackedScene" uid="uid://dlpjch78npwol" path="res://Target.tscn" id="5_2klcf"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gldc4"]
 albedo_color = Color(0.26295462, 0.43520594, 0, 1)
@@ -84,14 +85,60 @@ material = SubResource("ShaderMaterial_gqbix")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_71pa8")
 
-[node name="Plane" parent="." instance=ExtResource("3_2klcf")]
-transform = Transform3D(-0.7029108, 0, -0.711278, 0, 1, 0, 0.711278, 0, -0.7029108, 269.7165, 442.82797, 38.001656)
-
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 shadow_enabled = true
 
 [node name="Marker3D" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 283.63754, 0)
 gizmo_extents = 10.0
+
+[node name="Plane" parent="." instance=ExtResource("3_2klcf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -66.443245, 171.07755, -75.016)
+
+[node name="CSGTorus3D" type="CSGTorus3D" parent="."]
+transform = Transform3D(0.23038943, -0.9730985, 0, 0.9730985, 0.23038943, 0, 0, 0, 1, 274.92072, 112.00246, -88.493835)
+use_collision = true
+inner_radius = 15.0
+outer_radius = 18.0
+sides = 26
+ring_sides = 7
+
+[node name="CSGTorus3D2" type="CSGTorus3D" parent="."]
+transform = Transform3D(0.23038943, -0.9730985, 0, 0.9730985, 0.23038943, 0, 0, 0, 1, 488.46136, 169.61374, -88.493835)
+use_collision = true
+inner_radius = 15.0
+outer_radius = 18.0
+sides = 26
+ring_sides = 7
+
+[node name="CSGTorus3D3" type="CSGTorus3D" parent="."]
+transform = Transform3D(0.23038943, -0.9730985, 0, 0.9730985, 0.23038943, 0, 0, 0, 1, 592.45026, 74.52263, -88.493835)
+use_collision = true
+inner_radius = 15.0
+outer_radius = 18.0
+sides = 26
+ring_sides = 7
+
+[node name="CSGTorus3D4" type="CSGTorus3D" parent="."]
+transform = Transform3D(0.23038943, -0.9730985, 0, 0.9730985, 0.23038943, 0, 0, 0, 1, 687.0379, 112.00246, 24.321655)
+use_collision = true
+inner_radius = 15.0
+outer_radius = 18.0
+sides = 26
+ring_sides = 7
+
+[node name="CSGTorus3D5" type="CSGTorus3D" parent="."]
+transform = Transform3D(0.23038943, -0.9730985, 0, 0.9730985, 0.23038943, 0, 0, 0, 1, 746.08856, 112.00246, -87.50537)
+use_collision = true
+inner_radius = 15.0
+outer_radius = 18.0
+sides = 26
+ring_sides = 7
+
+[node name="Node3D" parent="." instance=ExtResource("5_2klcf")]
+transform = Transform3D(4.195, 0, 0, 0, 4.195, 0, 0, 0, 4.195, 134.36105, 129.97974, -164.85172)
+
+[node name="Node3D2" parent="." instance=ExtResource("5_2klcf")]
+transform = Transform3D(21.45, 0, 0, 0, 21.45, 0, 0, 0, 21.45, -47.143913, 75.58469, 333.79135)
 
 [connection signal="destroyed" from="Plane" to="." method="_on_plane_destroyed"]

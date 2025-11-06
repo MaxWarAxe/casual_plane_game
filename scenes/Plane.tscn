@@ -1,13 +1,35 @@
-[gd_scene load_steps=4 format=3 uid="uid://b106o0dinetaq"]
+[gd_scene load_steps=9 format=3 uid="uid://b106o0dinetaq"]
 
 [ext_resource type="Script" uid="uid://yjy635ewcrgj" path="res://scenes/plane.gd" id="1_7u8ti"]
 [ext_resource type="PackedScene" uid="uid://c3ok6l87rofkf" path="res://plane.fbx" id="1_nuwi0"]
+[ext_resource type="PackedScene" uid="uid://b1o1ixpyyytk0" path="res://scenes/camera_3d.tscn" id="3_ctdb1"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_duinr"]
 size = Vector3(14.511993, 1.8483582, 8.992195)
 
-[node name="Node3D" type="CharacterBody3D"]
+[sub_resource type="CylinderMesh" id="CylinderMesh_7u8ti"]
+top_radius = 0.05
+bottom_radius = 0.05
+height = 1000.0
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ctdb1"]
+spread = 180.0
+initial_velocity_min = 1.0
+initial_velocity_max = 1.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.19999999
+scale_max = 0.19999999
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v7oki"]
+albedo_color = Color(1, 1, 0.16862746, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_6yqq2"]
+material = SubResource("StandardMaterial3D_v7oki")
+
+[node name="Node3D" type="CharacterBody3D" node_paths=PackedStringArray("camera", "arm")]
 script = ExtResource("1_7u8ti")
+camera = NodePath("Camera3D")
+arm = NodePath("SpringArm3D")
 
 [node name="plane" parent="." instance=ExtResource("1_nuwi0")]
 
@@ -15,6 +37,42 @@ script = ExtResource("1_7u8ti")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9028778, 0.5782013, -0.01845932)
 shape = SubResource("BoxShape3D_duinr")
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-4.0321e-08, 0.3861476, -0.9224371, 1.6879046e-08, 0.9224371, 0.3861476, 1, 0, -4.371139e-08, -9.501261, 4.155516, 0)
-current = true
+[node name="Camera3D" parent="." instance=ExtResource("3_ctdb1")]
+transform = Transform3D(-4.371139e-08, 0.02094242, -0.99978065, 0, 0.99978065, 0.02094242, 1, 9.1542224e-10, -4.37018e-08, -9.501, 4.541, 0)
+
+[node name="SpringArm3D" type="SpringArm3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.371139e-08, -0.99999994, 0, 1, -4.3711385e-08, 0, 0, 0, 1, 497.822, 0.317, 2.732)
+mesh = SubResource("CylinderMesh_7u8ti")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.371139e-08, -0.99999994, 0, 1, -4.3711385e-08, 0, 0, 0, 1, 497.822, 0.317, -2.673)
+mesh = SubResource("CylinderMesh_7u8ti")
+
+[node name="Node" type="Node3D" parent="."]
+
+[node name="Barrel1" type="Marker3D" parent="Node"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.07137895, 0.432181, 2.7315035)
+gizmo_extents = 10.0
+
+[node name="Barrel3" type="Marker3D" parent="Node/Barrel1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1705713, 0, 0)
+gizmo_extents = 10.0
+
+[node name="Barrel2" type="Marker3D" parent="Node"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.11414027, 0.3997177, -2.7018661)
+gizmo_extents = 10.0
+
+[node name="Barrel3" type="Marker3D" parent="Node/Barrel2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.24794477, 0, 0)
+gizmo_extents = 10.0
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.3757305, 0.4408611, 0)
+amount = 64
+process_material = SubResource("ParticleProcessMaterial_ctdb1")
+draw_pass_1 = SubResource("BoxMesh_6yqq2")
+
+[node name="ShootSpeedTimer" type="Timer" parent="."]
+one_shot = true
